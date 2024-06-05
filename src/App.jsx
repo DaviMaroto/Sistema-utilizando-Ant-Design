@@ -18,9 +18,9 @@ function App() {
 
 
   const openModalInsert = () =>{
-    setModalInsert(modalInsert)
+    setModalInsert(!modalInsert)
   }
-  const handlechange = e =>{
+  const handleChange = e =>{
     const {name, value} = e.target
     setFornecedor({...fornecedor,
      [name]: value}) 
@@ -79,30 +79,30 @@ const requestGet = async () =>{
     <>
       <div className='App'>
           <Table columns = {columns} dataSource={data}/>
-          <Button type='primary' className='botton-insert'>Inserir novo fornecedor</Button>
+          <Button type='primary' className='botton-insert' onClick={openModalInsert}>Inserir novo fornecedor</Button>
      
       <Modal
-        visible = {modalInsert}
-        title = "Inserir Fornecedor"
-        destroyOnClose={true}
-        onCancel={openModalInsert}
-        centered
+         visible={modalInsert}
+         title="Insertar Artista"
+         destroyOnClose={true}
+         onCancel={openModalInsert}
+         centered
         footer={[
-          <Button onClick={openModalInsert}>Cancelar</Button>, 
+          <Button onClick={openModalInsert}>Cancelar</Button>,
           <Button type='primary'>Inserir</Button>, 
         ]}
         >
       <Form>
         <Item label = "Fornecedor">
-        <Input name="fornecedor"/>
+        <Input name="fornecedor" onChange={handleChange}/>
         </Item>
         
         <Item label = "pais">
-        <Input name="pais"/>
+        <Input name="pais" onChange={handleChange}/>
         </Item>
 
         <Item label = "periodo de Atividade">
-        <Input name="periodo"/>
+        <Input name="periodo" onChange={handleChange}/>
         </Item>
       </Form>    
       </Modal>
