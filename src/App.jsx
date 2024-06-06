@@ -4,108 +4,208 @@ import { Table, Button, Modal, Input, Form } from 'antd';
 import './App.css'
 
 const { Item } = Form
-const baseUrl = "http://localhost:3001/fornecedores"
+const baseUrl = "http://localhost:3001/fornecedor"
+
+const layout = {
+  labelCol: {
+    span: 8
+  },
+  wrapperCol: {
+    span: 16
+  }
+};
+
 function App() {
 
-  const [data, setData]=useState([])
-  const [modalInsert, setModalInsert] = useState(false)
-  const [fornecedor, setFornecedor] = useState ({
-    id: "",
-    fornecedor: "",
-    pais: "",
-    periodo: ""
+
+  const [data, setData] = useState([]);
+  const [modalInsert, setModalInsert] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
+  const [modalDelit, setModalDelit] = useState(false);
+  const [fornecedor, setFornecedor] = useState({
+    id: '',
+    fornecedor: '',
+    pais: '',
+    periodo: ''
   })
 
-
-  const openModalInsert = () =>{
-    setModalInsert(!modalInsert)
-  }
-  const handleChange = e =>{
-    const {name, value} = e.target
-    setFornecedor({...fornecedor,
-     [name]: value}) 
-    console.log(fornecedor)
+  const openCloseModalInsert = () => {
+    setModalInsert(!modalInsert);
   }
 
+  const openCloseModalEdit = () => {
+    setModalEdit(!modalEdit);
+  }
+
+  const openCloseModalDelit = () => {
+    setModalDelit(!modalDelit);
+  }
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFornecedor({
+      ...fornecedor,
+      [name]: value
+    });
+    console.log(fornecedor);
+  }
+
+  const seleccionarArtista = (fornecedor, caso) => {
+    setFornecedor(fornecedor);
+    (caso === "Editar") ? openCloseModalEdit() : openCloseModalDelit()
+  }
 
   const columns = [
     {
-      title: "iD",
-      dataIndex: "id",
-      key: "id"
-    },
-    {
-      title: "fornecedor",
+      title: "Fornecedor",
       dataIndex: "fornecedor",
-      key: "fornecedor"
+      key: "fornecedor",
     },
     {
-      title: "pais",
+      title: "País",
       dataIndex: "pais",
-      key: "pais"
+      key: "pais",
     },
     {
-      title: "periodo de Atividade",
+      title: "Periodo de Atividade",
       dataIndex: "periodo",
-      key: "periodo"
+      key: "periodo",
     },
     {
-      title: "Ação",
+      title: "Ações",
       key: "actions",
-      render: (fila) =>(
+      render: (fila) => (
+        
         <>
-         
-        <Button type='primary'>Editar</Button>{"  "}
-        <Button type='primary' danger>Excluir
-        </Button>
+          <Button type="primary" onClick={() => seleccionarArtista(fila, "Editar")}>Editar</Button> {"   "}
+          <Button type="primary" danger onClick={() => seleccionarArtista(fila, "Eliminar")}>
+            Excluir
+          </Button>
         </>
       ),
     },
-  ]
-const requestGet = async () =>{
-  await axios.get(baseUrl)
-  .then (response => {
-    setData(response.data)
-  }).catch(error =>{
-    console.log(error)
-  })
-}
+  ];
 
-  useEffect(()=> {
-    requestGet()
-  },[])
+  const requestGet = async () => {
+    await axios.get(baseUrl)
+      .then(response => {
+        setData(response.data);
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+  const requestPost = async () => {
+    delete fornecedor.id;
+    await axios.post(baseUrl, fornecedor)
+      .then(response => {
+        setData(data.concat(response.data));
+        openCloseModalInsert();
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+
+  const requestPut = async () => {
+    await axios.put(baseUrl + "/" + fornecedor.id, fornecedor)
+      .then(response => {
+        var dataAuxiliar = data;
+        dataAuxiliar.map(elemento => {
+          if (elemento.id === fornecedor.id) {
+            elemento.fornecedor = fornecedor.fornecedor;
+            elemento.pais = fornecedor.pais;
+            elemento.periodo = fornecedor.periodo;
+          }
+        });
+        setData(dataAuxiliar);
+        openCloseModalEdit();
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+
+
+  const requestDelete = async () => {
+    await axios.delete(baseUrl + "/" + fornecedor.id)
+      .then(response => {
+        setData(data.filter(elemento => elemento.id !== fornecedor.id));
+        openCloseModalDelit();
+      }).catch(error => {
+        console.log(error);
+      })
+  }
+
+  useEffect(() => {
+    requestGet();
+  }, [])
 
   return (
     <>
-      <div className='App'>
-          <Table columns = {columns} dataSource={data}/>
-          <Button type='primary' className='botton-insert' onClick={openModalInsert}>Inserir novo fornecedor</Button>
-     
-      <Modal
-         visible={modalInsert}
-         title="Insertar Artista"
-         destroyOnClose={true}
-         onCancel={openModalInsert}
-         centered
-        footer={[
-          <Button onClick={openModalInsert}>Cancelar</Button>,
-          <Button type='primary'>Inserir</Button>, 
-        ]}
-        >
-      <Form>
-        <Item label = "Fornecedor">
-        <Input name="fornecedor" onChange={handleChange}/>
-        </Item>
-        
-        <Item label = "pais">
-        <Input name="pais" onChange={handleChange}/>
-        </Item>
+      <div className="App">
+        <Table columns={columns} dataSource={data} />
+        <Button type="primary" className="botton-insert" onClick={openCloseModalInsert}>Inserir Fornecedor</Button>
 
-        <Item label = "periodo de Atividade">
-        <Input name="periodo" onChange={handleChange}/>
-        </Item>
-      </Form>    
-      </Modal>
+        <Modal
+          visible={modalInsert}
+          title="Inserir Fornecedor"
+          destroyOnClose={true}
+          onCancel={openCloseModalInsert}
+          centered
+          footer={[
+            <Button onClick={openCloseModalInsert}>Cancelar</Button>,
+            <Button type="primary" onClick={requestPost}>Inserir</Button>,
+          ]}
+        >
+          <Form {...layout}>
+            <Item label="Fornecedor">
+              <Input name="fornecedor" onChange={handleChange} />
+            </Item>
+
+            <Item label="País">
+              <Input name="pais" onChange={handleChange} />
+            </Item>
+
+            <Item label="Periodo de Atividade">
+              <Input name="periodo" onChange={handleChange} />
+            </Item>
+          </Form>
+        </Modal>
+
+        <Modal
+          visible={modalEdit}
+          title="Editar Fornecedor"
+          onCancel={openCloseModalEdit}
+          centered
+          footer={[
+            <Button onClick={openCloseModalEdit}>Cancelar</Button>,
+            <Button type="primary" onClick={requestPut}>Editar</Button>,
+          ]}
+        >
+          <Form {...layout}>
+            <Item label="Fornecedor">
+              <Input name="fornecedor" onChange={handleChange} value={fornecedor && fornecedor.fornecedor} />
+            </Item>
+
+            <Item label="País">
+              <Input name="pais" onChange={handleChange} value={fornecedor && fornecedor.pais} />
+            </Item>
+
+            <Item label="Periodo de Atividade">
+              <Input name="periodo" onChange={handleChange} value={fornecedor && fornecedor.periodo} />
+            </Item>
+          </Form>
+        </Modal>
+
+        <Modal
+          visible={modalDelit}
+          onCancel={openCloseModalDelit}
+          centered
+          footer={[
+            <Button onClick={openCloseModalDelit}>Não</Button>,
+            <Button type="primary" danger onClick={requestDelete}>Sim</Button>,
+          ]}
+        >
+          Tem certeza que deseja esxcluir esse fornecedor? <b>{fornecedor && fornecedor.fornecedor}</b>?
+        </Modal>
       </div>
 
     </>
