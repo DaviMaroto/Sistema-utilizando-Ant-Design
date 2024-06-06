@@ -77,8 +77,8 @@ function App() {
       render: (fila) => (
         
         <>
-          <Button type="primary" onClick={() => seleccionarArtista(fila, "Editar")}>Editar</Button> {"   "}
-          <Button type="primary" danger onClick={() => seleccionarArtista(fila, "Eliminar")}>
+          <Button type="primary" className='botton-edit' onClick={() => seleccionarArtista(fila, "Editar")}>Editar</Button> {"   "}
+          <Button type="primary" className='botton-delit' danger onClick={() => seleccionarArtista(fila, "Eliminar")}>
             Excluir
           </Button>
         </>
@@ -204,7 +204,7 @@ function App() {
             <Button type="primary" danger onClick={requestDelete}>Sim</Button>,
           ]}
         >
-          Tem certeza que deseja esxcluir esse fornecedor? <b>{fornecedor && fornecedor.fornecedor}</b>?
+          <pan>Tem certeza que deseja esxcluir esse fornecedor?</pan> <b>{fornecedor && fornecedor.fornecedor}</b>?
         </Modal>
       </div>
 
