@@ -41,13 +41,13 @@ const Footer = () => {
                 <div className="sb__footer-links_div">
                     <h4>Siga-nos</h4>
                     <div className="socialmedia">
-                        <p><img src={facebook} alt="" /></p>
-                        <p><img src={instagram} alt="" /></p>
+                        <p><img src={facebook} alt="logo-facebook" /></p>
+                        <p><img src={instagram} alt="logo-instgram" /></p>
                         
                     </div>
                 </div>
             </div>
-            
+            <hr />
             <div className="sb__footer-bellow">
                     <div className="sb__footer-copyright">
                         <p>

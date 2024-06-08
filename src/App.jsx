@@ -52,7 +52,7 @@ function App() {
     console.log(fornecedor);
   }
 
-  const seleccionarArtista = (fornecedor, caso) => {
+  const selectFornecedor = (fornecedor, caso) => {
     setFornecedor(fornecedor);
     (caso === "Editar") ? openCloseModalEdit() : openCloseModalDelit()
   }
@@ -77,10 +77,10 @@ function App() {
       title: "Ações",
       key: "actions",
       render: (fila) => (
-        
+
         <>
-          <Button type="primary" className='botton-edit' onClick={() => seleccionarArtista(fila, "Editar")}>Editar</Button> {"   "}
-          <Button type="primary" className='botton-delit' danger onClick={() => seleccionarArtista(fila, "Eliminar")}>
+          <Button type="primary" className='botton-edit' onClick={() => selectFornecedor(fila, "Editar")}>Editar</Button> {"   "}
+          <Button type="primary" className='botton-delit' danger onClick={() => selectFornecedor(fila, "Eliminar")}>
             Excluir
           </Button>
         </>
@@ -143,10 +143,10 @@ function App() {
   return (
     <>
       <div className="App">
-        <Navbar/>
+        <Navbar />
         <Table className='table' columns={columns} dataSource={data} />
-         <Button type="primary" className="botton-insert" onClick={openCloseModalInsert}>Inserir Fornecedor</Button>
-          <Footer/>
+        <Button type="primary" className="botton-insert" onClick={openCloseModalInsert}>Inserir Fornecedor</Button>
+        <Footer />
         <Modal
           visible={modalInsert}
           title="Inserir Fornecedor"
