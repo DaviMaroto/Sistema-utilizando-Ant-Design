@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from "axios"
 import { Table, Button, Modal, Input, Form } from 'antd';
 import './App.css'
+import Navbar from './navbar/Navbar';
+import Footer from './footer/Footer';
 
 const { Item } = Form
 const baseUrl = "http://localhost:3001/fornecedor"
@@ -141,9 +143,10 @@ function App() {
   return (
     <>
       <div className="App">
-        <Table columns={columns} dataSource={data} />
-        <Button type="primary" className="botton-insert" onClick={openCloseModalInsert}>Inserir Fornecedor</Button>
-
+        <Navbar/>
+        <Table className='table' columns={columns} dataSource={data} />
+         <Button type="primary" className="botton-insert" onClick={openCloseModalInsert}>Inserir Fornecedor</Button>
+          <Footer/>
         <Modal
           visible={modalInsert}
           title="Inserir Fornecedor"
