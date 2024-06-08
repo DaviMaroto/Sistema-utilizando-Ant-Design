@@ -3,6 +3,7 @@
 }
 .footer{
     background-color: #29335c;
+    min-height: 50vh;
 }
 .sb__footer{
     display: flex;
