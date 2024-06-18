@@ -1,8 +1,6 @@
 import React, { useRef } from "react";
 import './Navbar.css';
 import { FaBars, FaTimes } from "react-icons/fa";
-import logo from '../assets/Group 13.png';
-
 
 const Navbar=()=>{
     const navRef = useRef();
@@ -14,7 +12,7 @@ const Navbar=()=>{
     }
     return (
         <header>
-        <h3>Insight Lab</h3>
+        <h3>Logo</h3>
         <nav ref={navRef}>
             <a href="/#">Início</a>
             <a href="/#">Sobre</a>

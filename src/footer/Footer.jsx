@@ -9,7 +9,7 @@ const Footer = () => {
             <div className="sb__footer-links">
                
                 <div className="sb__footer-links_div">
-                    <h4>Insigth Lab</h4>
+                    <h4>Logo</h4>
                     <a href="#">
                         <p>Início</p>
                     </a>
